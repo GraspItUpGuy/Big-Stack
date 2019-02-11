@@ -24,6 +24,10 @@ const PersonSchema = new Schema({
         default : "https://www.ibts.org/wp-content/uploads/2017/08/iStock-476085198.jpg",
        
     },
+    gender : {
+        type : String ,
+        required : true,
+    },
     date : { 
         type : Date,
         default : Date.now, 

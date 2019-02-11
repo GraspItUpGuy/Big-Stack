@@ -26,9 +26,22 @@ const Person = require('../../models/Persons')
 // @access  -  PUBLIC
 router.post('/register',(req,res)=>{
     res.send('registration takes here')
-    Person.findOne({email : req.body.email})
-                                           .then()
-                                           .catch(err => console.log(err));
+    Person.findOne({email : req.body.email}
+          .then(person => {
+           if(person){
+           return res.status(400).json({emailerror : 'Email already registerd'})
+            } else { 
+                const newPerson = new Person({
+                    name : req.body.name,
+                    email : req.body.email,
+                    password : req.body.password,
+                    username  :req.body.password,
+                    gender : req.body.gender,
+                })
+            }
+
+           })
+           .catch(err => console.log(err));
 })
 
 
