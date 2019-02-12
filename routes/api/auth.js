@@ -25,18 +25,21 @@ const Person = require('../../models/Persons')
 // @desc    -  route for registration of user
 // @access  -  PUBLIC
 router.post('/register',(req,res)=>{
-    res.send('registration takes here')
+    // res.send('registration takes here')
     Person.findOne({email : req.body.email} // then & catch to avoid runtime errors
           .then(person => {
+              console.log('aaaaaaaaaaaa')
            if(person){  // if=> user has already registered once
            return res.status(400).json({emailerror : 'Email already registerd'})
-            } else {   // in case he is registering for the first time
+            } else{   // in case he is registering for the first time
+                // console.log('aaaa')
                 const newPerson = new Person({
                     // getting the required fields form the person
+                    
                     name : req.body.name,
                     email : req.body.email,
                     password : req.body.password,
-                    username  :req.body.password,
+                    username  :req.body.username,
                     gender : req.body.gender,
                 })
                 // encrypt password using bcrypt   => taken from documentation
@@ -48,15 +51,15 @@ router.post('/register',(req,res)=>{
                         if(err){ throw err} // incase error occours in hashing
                         newPerson.password = hash;
                         newPerson.save() //use .then &.catch in case db error occours 
-                                 .then( person =res.json(person)) // if user regsteresd successfully => grab all these deatils
-                                 .catch(err => console.log(err))
+                                 .then( person => {res.json(person)}) // if user regsteresd successfully => grab all these deatils
+                                 .catch(() => console.log(' error occured in then block'))
                      });
                 });
             }
         
 
            })
-           .catch(err => console.log(err)))
+           .catch(() => console.log('error occured in flow inside the then block ')))
 })
 
 

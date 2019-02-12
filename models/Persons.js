@@ -33,5 +33,5 @@ const PersonSchema = new Schema({
         default : Date.now, 
     }
 })
-
-module.exports = Person = mongoose.model("myPerson", PersonSchema);
+let Person = mongoose.model("myPerson", PersonSchema);
+module.exports = Person ;
