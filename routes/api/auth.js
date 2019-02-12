@@ -26,19 +26,34 @@ const Person = require('../../models/Persons')
 // @access  -  PUBLIC
 router.post('/register',(req,res)=>{
     res.send('registration takes here')
-    Person.findOne({email : req.body.email}
+    Person.findOne({email : req.body.email} // then & catch to avoid runtime errors
           .then(person => {
-           if(person){
+           if(person){  // if=> user has already registered once
            return res.status(400).json({emailerror : 'Email already registerd'})
-            } else { 
+            } else {   // in case he is registering for the first time
                 const newPerson = new Person({
+                    // getting the required fields form the person
                     name : req.body.name,
                     email : req.body.email,
                     password : req.body.password,
                     username  :req.body.password,
                     gender : req.body.gender,
                 })
+                // encrypt password using bcrypt   => taken from documentation
+                const saltRounds = 10;
+                const someOtherPlaintextPassword = 'not_bacon';
+                bcrypt.genSalt(saltRounds, (err, salt)=> {
+                    bcrypt.hash(newPerson.password, salt,(err, hash)=> {
+                        // Store hash in your password DB.
+                        if(err){ throw err} // incase error occours in hashing
+                        newPerson.password = hash;
+                        newPerson.save() //use .then &.catch in case db error occours 
+                                 .then( person =res.json(person)) // if user regsteresd successfully => grab all these deatils
+                                 .catch(err => console.log(err))
+                     });
+                });
             }
+        
 
            })
            .catch(err => console.log(err)))
