@@ -80,6 +80,7 @@ router.post('/login',(req,res)=>{
                      .then(isCorrect =>{
                         if(isCorrect){
                             res.json({success : 'User is logged in successfully'})
+                            // use payload and create token for user
                         } else{
                             res.status(400).json({passworderror : 'incorrect password'})
                         }
