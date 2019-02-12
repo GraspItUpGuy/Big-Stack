@@ -26,9 +26,9 @@ const Person = require('../../models/Persons')
 // @access  -  PUBLIC
 router.post('/register',(req,res)=>{
     // res.send('registration takes here')
-    Person.findOne({email : req.body.email} // then & catch to avoid runtime errors
+    Person.findOne({email : req.body.email}) // then & catch to avoid runtime errors
           .then(person => {
-              console.log('aaaaaaaaaaaa')
+            //   console.log('aaaaaaaaaaaa')
            if(person){  // if=> user has already registered once
            return res.status(400).json({emailerror : 'Email already registerd'})
             } else{   // in case he is registering for the first time
@@ -59,7 +59,7 @@ router.post('/register',(req,res)=>{
         
 
            })
-           .catch(() => console.log('error occured in flow inside the then block ')))
+           .catch(() => console.log('error occured in flow inside the then block '))
 })
 
 
