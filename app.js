@@ -42,7 +42,12 @@ mongoose
         .then(()=> console.log('db connected successfully'))
         .catch(err => console.log(err)) 
 
+// Passport middlewares
+app.use(passport.initialize())
 
+
+// config for JWT Strategy
+require("./Strategies/jsonWTStrategy")(passport)
 
 
 

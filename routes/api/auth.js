@@ -113,4 +113,26 @@ router.post('/login',(req,res)=>{
         .catch(console.log(' error encounterd in the route'))
 })
 
+// @type    -  GET
+// @route   -  /api/auth/profile
+// @desc    -  just for login of users
+// @access  -  PRIVATE
+ // passport.authenticate makes the route private, coming from the documantation
+router.get('/profile', passport.authenticate('jwt', { session: false }),
+    (req, res)=> {
+        res.send(req.user.profile);
+        // console.log(req)
+        res.json({
+            id : req.user.id,
+            name : req.user.name,
+            email : req.user.email,
+            gender : req.user.gender,
+            username : req.user.username,
+            profilepic : req.user.profilepic,
+        })
+    }
+);
+
+
+
 module.exports = router ;
