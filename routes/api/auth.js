@@ -1,6 +1,6 @@
 const express = require('express')
 const bcrypt = require('bcrypt')
-const  JSONwebToken  = require('jsonwebtoken')
+const  JsonWebToken  = require('jsonwebtoken')
 const passport = require('passport')
 
 const key = require('../../setup/myurl') //  the secret in myurl.js
@@ -79,8 +79,30 @@ router.post('/login',(req,res)=>{
               bcrypt.compare(password,person.password)
                      .then(isCorrect =>{
                         if(isCorrect){
-                            res.json({success : 'User is logged in successfully'})
-                            // use payload and create token for user
+                            // res.json({success : 'User is logged in successfully'})
+                            // use payload and create token for user =>
+                            // from documantation of jsonwebtoken
+
+                            const payload = {
+                                id : person.id,
+                                name : person.name,
+                                email : person.email,
+                                username : person.username
+                            }
+                            JsonWebToken.sign(
+                            payload,
+                            key.secret,
+                            {expiresIn : 3 * 60 * 60},
+                            (err,token) => {
+                                res.json({
+                                    success : true,
+                                    token : "Bearer" + token,
+                                })
+                            
+                                
+                            }
+                        )
+
                         } else{
                             res.status(400).json({passworderror : 'incorrect password'})
                         }
