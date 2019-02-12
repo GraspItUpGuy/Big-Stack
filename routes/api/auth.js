@@ -63,4 +63,23 @@ router.post('/register',(req,res)=>{
 })
 
 
+// @type    -  GET
+// @route   -  /api/auth/login
+// @desc    -  just for login of users
+// @access  -  PUBLIC
+router.post('/login',(req,res)=>{
+    const email = req.body.email;
+    const password = req.body.password
+    // password comes in clear text format, hence hashing using bcrypt is required
+    Person.findOne({email})
+        .then(person => {
+            if( !person){
+                return res.status(404).json({emailerror : 'user not found'})
+            } else {
+                
+            }
+        })
+        .catch(console.log(' error encounterd in the route'))
+})
+
 module.exports = router ;
