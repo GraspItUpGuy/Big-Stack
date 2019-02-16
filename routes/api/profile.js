@@ -37,7 +37,7 @@ router.post('/',passport.authenticate('jwt', {session : false}),(req,res)=>{
    if(req.body.website)   { profileValues.website =req.body.website  }
    if(req.body.portfolio) { profileValues.portfolio =req.body.portfolio  }
    if(req.body.country)   { profileValues.country =req.body.country  }
-   if(req.body.languages != undefiend){
+   if(req.body.languages !== undefiend){
        profileValues.languages = req.body.languages.split(',')
     } // languages to be coming seperated on basis of ',' , hence splitting them
     if(req.body.youtube)   { profileValues.youtube =req.body.youtube  }
@@ -65,6 +65,11 @@ router.post('/',passport.authenticate('jwt', {session : false}),(req,res)=>{
                             if(profile){
                                 res.status(400).json({username : 'username already esists'})
                             }
+                            //save user
+                            new Profile(profileValues)
+                                                   .save()
+                                                   .then( profile => res.json(profile))
+                                                   .catch(console.log('érror => save user => profile.js'))
                         })
                         .catch( console.log('error ocurred => //database stuff => profile.js'))
               }
