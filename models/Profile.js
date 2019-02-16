@@ -48,7 +48,7 @@ const ProfileSchema = new Schema ({
                 type : Boolean,
                 default : false,
             },
-            deatails :{
+            details :{
                 type : String,
                 max : 300,
             }
