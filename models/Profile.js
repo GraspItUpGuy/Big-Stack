@@ -70,6 +70,10 @@ const ProfileSchema = new Schema ({
         linkedin : {
             type : String,
         },
+        date : { 
+            type : date,
+            default :Date.now
+        }
     }
 
 })

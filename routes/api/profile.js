@@ -40,11 +40,12 @@ router.post('/',passport.authenticate('jwt', {session : false}),(req,res)=>{
    if(req.body.languages !== undefiend){
        profileValues.languages = req.body.languages.split(',')
     } // languages to be coming seperated on basis of ',' , hence splitting them
-    if(req.body.youtube)   { profileValues.youtube =req.body.youtube  }
-    if(req.body.facebook)   { profileValues.facebook =req.body.facebook  }
-    if(req.body.instagram)   { profileValues.instagram =req.body.instagram  }
-    if(req.body.github)   { profileValues.github =req.body.github  }
-    if(req.body.linkedin)   { profileValues.linkedin =req.body.linkedin}
+    profileValues.social = {}
+    if(req.body.youtube)   { profileValues.social.youtube =req.body.youtube  }
+    if(req.body.facebook)   { profileValues.social.facebook =req.body.facebook  }
+    if(req.body.instagram)   { profileValues.social.instagram =req.body.instagram  }
+    if(req.body.github)   { profileValues.social.github =req.body.github  }
+    if(req.body.linkedin)   { profileValues.social.linkedin =req.body.linkedin}
  
     // data collection done...
 
