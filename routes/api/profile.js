@@ -90,13 +90,28 @@ router.get('/username', (req,res)=>{
         .populate("user", [ "name", "profilepic"])
         .then( profile=>{
             if(!profile){
-                res.status(404).json({usernotfound : "Oops ! user not found"})
+                res.status(404).json({usernamenotfound : "Oops ! user not found"})
             }
             res.json(profile);
         })
         .catch(console.log("database error, can't fetch the user via username => profile.js"))
 })
 
+// @type    -  GET
+// @route   -  /api/profile/:id
+// @desc    -  just for  getting user profile using USERNAME
+// @access  -  PUBLIC
+router.get('/id', (req,res)=>{
+    Profile.findOne({id : req.params.id})
+          .populate("user", [ "name", "profilepic"])
+          .then( profile=>{
+              if(!profile){
+                  res.status(404).json({idnotfound : "Oops ! user not found"})
+              }
+              res.json(profile);
+          })
+          .catch(console.log("database error, can't fetch the user via id => profile.js"))
+  })
 
 
 module.exports = router ;
