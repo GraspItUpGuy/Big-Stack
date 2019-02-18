@@ -81,5 +81,22 @@ router.post('/',passport.authenticate('jwt', {session : false}),(req,res)=>{
 
 })
 
+// @type    -  GET
+// @route   -  /api/profile/:username
+// @desc    -  just for  getting user profile using USERNAME
+// @access  -  PUBLIC
+router.get('/username', (req,res)=>{
+  Profile.findOne({username : req.params.username})
+        .populate("user", [ "name", "profilepic"])
+        .then( profile=>{
+            if(!profile){
+                res.status(404).json({usernotfound : "Oops ! user not found"})
+            }
+            res.json(profile);
+        })
+        .catch(console.log("database error, can't fetch the user via username => profile.js"))
+})
+
+
 
 module.exports = router ;
