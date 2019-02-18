@@ -85,7 +85,7 @@ router.post('/',passport.authenticate('jwt', {session : false}),(req,res)=>{
 // @route   -  /api/profile/:username
 // @desc    -  just for  getting user profile using USERNAME
 // @access  -  PUBLIC
-router.get('/username', (req,res)=>{
+router.get('/:username', (req,res)=>{
   Profile.findOne({username : req.params.username})
         .populate("user", [ "name", "profilepic"])
         .then( profile=>{
@@ -114,4 +114,22 @@ router.get('/id', (req,res)=>{
   })
 
 
+// @type    -  GET
+// @route   -  /api/profile/everyone
+// @desc    -  just for  getting user profile of EVERYONE
+// @access  -  PUBLIC
+
+// /find bcoz the /everyone was a bug that considered everyone as a username
+router.get('/find/everyone', (req,res)=>{
+    Profile.find()
+          .populate("user", [ "name", "profilepic"])
+          .then( profiles=>{
+              if(!profiles){
+                  res.status(404).json({NoProfileWasFound : "No profiles were found"})
+              }
+              res.json(profile);
+          })
+          .catch(console.log("database error, can't fetch any profiles"))
+  })
+  
 module.exports = router ;
