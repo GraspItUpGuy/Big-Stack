@@ -73,5 +73,27 @@ router.post('/answers/:id', passport.authenticate('jwt',{session : false}), (req
             .catch(console.log('error in the answer submitting route => questions.js'))
 })
 
+// @type    -  POST
+// @route   -  /api/answers/upvote/:id
+// @desc    -  just for upvoting
+// @access  -  PRIVATE
+router.post('/upvote/:id', passport.authenticate('jwt', {session : false}) ,(req,res)=>{
+    Profile.findOne({user : req.user.id})
+          .then( profile =>{
+              Question.findById(req.params.id)
+                    .then( question =>{
+                        if (question.upvotes.filter(upvote => upvote.user.toString() === req.user.id.toString()).length >0) {
+                             return res.status(400).json({noupvote : "user already upvoted"})
+                        }
+                        question.upvotes.unshift({user : req.user.id})
+                        question.save()
+                                .then( question => res.json(question))
+                                .catch(console.log ("db error in saving => /upvote/:id => question.js"))
+                    })
+                    .catch(console.log("db error in finding the user => /upvote/:id => questions.js"))
+          })
+          .catch(console.log("db error in upvotes => upvote/:id => questions.js"))
+})
+
 
 module.exports = router ;
