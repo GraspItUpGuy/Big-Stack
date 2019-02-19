@@ -10,13 +10,27 @@ const Profile= require('../../models/Profile')
 // Load Question Model
 const Question = require('../../models/Question')
 
+
+// dummy route for testing
+// // @type    -  GET
+// // @route   -  /api/questions
+// // @desc    -  just for testing
+// // @access  -  PUBLIC
+// router.get('/', (req,res)=>{
+//     res.json({question : "question is success"})
+// })
+
 // @type    -  GET
 // @route   -  /api/questions
-// @desc    -  just for testing
+// @desc    -  just for showing all questions
 // @access  -  PUBLIC
 router.get('/', (req,res)=>{
-    res.json({question : "question is success"})
+    Question.find()
+            .sort({ date:'desc'}) // from stackOverflow
+            .then( questions => res.json(questions))
+            .catch( console.log('No questions found in db to display => questions.js '))
 })
+
 
 // @type    -  POST
 // @route   -  /api/questions
