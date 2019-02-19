@@ -181,8 +181,28 @@ Profile.findOne( {user : req.user.id})
     .catch(console.log('db error in route => /mywork => profile.js'))})
    
 
-
-
+// @type    -  DELETE
+// @route   -  /api/profile/workrole/:workrole_id
+// @desc    -  just for deleting a specific workrole
+// @access  -  PRIVATE
+router.delete('/workrole/:workrole_id',passport.authenticate('jwt',{session : false}),(req,res)=>{
+    Profile.findOne({user : req.user.id})
+          .then( profile =>{
+            if(!profiles){
+                res.status(404).json({NoProfileWasFound : "No profiles were found"})
+            } else{
+                const removethis = profile.workrole
+                                         .map(item =>{item.id })
+                                         .indexOf(req.params.workrole_id)
+                profile.workrole.splice(remove, 1)
+                
+                profile.save()
+                      .then( profile => res.json(profile))
+                      .catch(console.log("db error in saving deletion => workrole/:workrole_id => profile.js"))
+            }
+          })
+          .catch(console.log('db error => /workrole/:workrole_id => profile.js'))
+} )
 
 
 module.exports = router  ;
