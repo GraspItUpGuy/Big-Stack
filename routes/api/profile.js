@@ -118,7 +118,6 @@ router.get('/id', (req,res)=>{
 // @route   -  /api/profile/everyone
 // @desc    -  just for  getting user profile of EVERYONE
 // @access  -  PUBLIC
-
 // /find bcoz the /everyone was a bug that considered everyone as a username
 router.get('/find/everyone', (req,res)=>{
     Profile.find()
@@ -132,4 +131,22 @@ router.get('/find/everyone', (req,res)=>{
           .catch(console.log("database error, can't fetch any profiles"))
   })
   
+// @type    -  DELETE
+// @route   -  /api/profile/
+// @desc    -  just for  DELETING user based on mongoID
+// @access  -  PRIVATE
+router.delete('/', passport.authenticate('jwt', { session : false}), (req,res)=>{
+    Profile.findOne({user : req.user.id})
+     // no then and catch bcoz we don't want to do anything if id is not found
+    Profile.findOneAndRemove({user : req.user.id}) 
+          .then(()=>{
+              Person.findOneAndRemove({ _id : req.user.id})
+                    .then( ()=> { res.json({ success : "deletion successful"})})
+                    .catch(console.log('error is deletion from authentication section => profile.js'))
+          })
+          .catch(console.log(' error in the deletion of the user => profile.js'))
+})
+
+
+
 module.exports = router ;
