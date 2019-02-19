@@ -51,4 +51,27 @@ router.post('/', passport.authenticate('jwt', {session : false}), (req,res)=>{
                .catch(console.log('unable to push questions to db => questions.js '))
 })
 
+// @type    -  POST
+// @route   -  /api/answers/:id
+// @desc    -  just for submitting answers to questions
+// @access  -  PRIVATE
+router.post('/answers/:id', passport.authenticate('jwt',{session : false}), (req,res)=>{
+    Question.findById(req.params.id)
+            .then(question => {
+                const newAnswer = {
+                    user : req.user.id,
+                    name : req.body.name,
+                    answerText : req.body.answerText,
+                }
+                question.answers.push(newAnswer)
+                question.save()
+                        .then(question => {
+                            res.json({question})
+                        })
+                        .catch(console.log("error in saving the answers into db => /answers/:id => questions.js"))
+            })
+            .catch(console.log('error in the answer submitting route => questions.js'))
+})
+
+
 module.exports = router ;
