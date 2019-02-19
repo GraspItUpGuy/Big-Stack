@@ -149,4 +149,40 @@ router.delete('/', passport.authenticate('jwt', { session : false}), (req,res)=>
 
 
 
-module.exports = router ;
+// @type    -  DELETE
+// @route   -  /api/profile/workrole
+// @desc    -  just for  adding work profile of the user
+// @access  -  PRIVATE
+router.post('/workrole',passport.authenticate('jwt',{session : false}), (req,res)=>{
+Profile.findOne( {user : req.user.id})
+    .then( profile =>{
+        if(!profiles){
+            res.status(404).json({NoProfileWasFound : "No profiles were found"})
+        } else {
+            const newWork = {
+                role : req.body.role,
+                company : req.body.company,
+                country : req.body.country,
+                from : req.body.from,
+                to : req.body.to,
+                current : req.body.current,
+                details : req.body.details,
+                
+            }
+            profile.workrole.push(newWork)
+            profile.save()
+                  .then( profile =>{
+                      res.json((profile))
+                  })
+                  .catch( console.log("error in adding workrole to the db =>profile.js "))
+        }
+
+    }) 
+    .catch(console.log('db error in route => /mywork => profile.js'))})
+   
+
+
+
+
+
+module.exports = router  ;
