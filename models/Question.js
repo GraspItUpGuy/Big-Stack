@@ -54,5 +54,5 @@ const QuestionsSchema = new Schema({
 })
 
 
-Question = mongoose.model("myQuestion",QuestionSchema );
+Question = mongoose.model("myQuestion",QuestionsSchema );
 module.exports = Question ; 
